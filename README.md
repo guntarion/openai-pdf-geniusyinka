@@ -8,3 +8,6 @@ This is a simple nodejs OPENAI chatbot that allows you chat with your pdf file.
 - navigate to 'http://localhost:3000/ask' to view the response of your question.
 - edit your query/questions on line 46 in 'app.js'
 - enjoy! Leave a ⭐️ if this helped you!
+
+
+https://github.com/geniusyinka/OPENAI-PDF-CHATBOT?tab=readme-ov-file
