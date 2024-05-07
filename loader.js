@@ -9,7 +9,8 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 export const injest_docs = async() => {
-  const loader = new PDFLoader("10.1.1.83.5248.pdf"); //you can change this to any PDF file of your choice.
+  // const loader = new PDFLoader("10.1.1.83.5248.pdf"); //you can change this to any PDF file of your choice.
+  const loader = new PDFLoader("FAQbotVido.pdf"); //you can change this to any PDF file of your choice.
   const docs = await loader.load();
   console.log('docs loaded')
   
@@ -26,7 +27,7 @@ export const injest_docs = async() => {
     console.log('saving...')
 
     // const directory = "/Users/yinka/Documents/art/OPENAI-PDF-CHATBOT/";
-    const directory ="/Users/guntar/Documents/SourceCodes/NodeJS/openai-pdf-geniusyinka/loader";
+    const directory ="/Users/guntar/Documents/SourceCodes/NodeJS/openai-pdf-geniusyinka/vido";
     await vectorStore.save(directory);
     console.log('saved!')
 

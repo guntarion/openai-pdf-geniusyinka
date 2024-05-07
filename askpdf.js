@@ -19,7 +19,7 @@ const app = express();
 // Middleware to parse JSON bodies from POST request
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3010;
 
 /* Create HTTP server */
 http.createServer(app).listen(port);
@@ -29,33 +29,41 @@ console.info("listening on port " + port);
 app.get('/health', async (req, res) => {
   res.json({
     success: true,
-    message: 'Server is healthy',
+    message: 'Server is healthy and running 😃',
   })
 })
 
 app.post('/ask', async (req, res) => {
   const question = req.body.question;
-    try {
-        const llmA = new OpenAI({ modelName: "gpt-3.5-turbo"});
-        const chainA = loadQAStuffChain(llmA);
-        const directory = process.env.DIR //saved directory in .env file
-        
-        const loadedVectorStore = await FaissStore.load(
-          directory,
-          new OpenAIEmbeddings()
-          );
-          
-          const result = await loadedVectorStore.similaritySearch(question, 1);
-          const resA = await chainA.call({
-            input_documents: result,
-            question,
-          });
-          // console.log({ resA });
-          res.json({ result: resA }); // Send the response as JSON
-    } 
-      
-      catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' }); // Send an error response
-    }
-  });
+  const collection = req.body.collection;
+  let directory;
+
+  if (collection === 'vido') {
+    directory = process.env.DIR_VIDO;
+  } else if (collection === 'fiqh') {
+    directory = process.env.DIR_FIQH;
+  } else {
+    return res.status(400).json({ error: 'Invalid collection' });
+  }
+
+  try {
+    const llmA = new OpenAI({ modelName: "gpt-3.5-turbo"});
+    const chainA = loadQAStuffChain(llmA);
+
+    const loadedVectorStore = await FaissStore.load(
+      directory,
+      new OpenAIEmbeddings()
+    );
+
+    const result = await loadedVectorStore.similaritySearch(question, 1);
+    const resA = await chainA.call({
+      input_documents: result,
+      question,
+    });
+
+    res.json({ result: resA }); // Send the response as JSON
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' }); // Send an error response
+  }
+});
