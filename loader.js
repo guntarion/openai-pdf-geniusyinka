@@ -1,4 +1,4 @@
-
+// This is to create the vector store from the PDF file
 
 import { OpenAI } from "langchain/llms/openai";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
@@ -10,7 +10,7 @@ dotenv.config()
 
 export const injest_docs = async() => {
   // const loader = new PDFLoader("10.1.1.83.5248.pdf"); //you can change this to any PDF file of your choice.
-  const loader = new PDFLoader("FAQbotVido.pdf"); //you can change this to any PDF file of your choice.
+  const loader = new PDFLoader("./docs/FAQbotVido.pdf"); //you can change this to any PDF file of your choice.
   const docs = await loader.load();
   console.log('docs loaded')
   
